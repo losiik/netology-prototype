@@ -1,7 +1,7 @@
 from fastapi.exceptions import HTTPException
 
 from sympy import parse_expr
-from sympy.core.numbers import zoo, Float
+from sympy.core.numbers import zoo, Float, Zero
 
 
 class CalculatorService:
@@ -28,7 +28,8 @@ class CalculatorService:
             raise HTTPException(status_code=400, detail="Division by zero is not possible")
 
         result = parsed_expr.evalf()
-        if type(result) is not Float:
+
+        if type(result) is not Float and type(result) is not Zero:
             raise HTTPException(status_code=400, detail="The expression must contain only numbers")
 
         return float(result)
